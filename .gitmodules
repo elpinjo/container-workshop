@@ -1,0 +1,3 @@
+[submodule "cd-catalog/CdCatalog"]
+	path = cd-catalog/CdCatalog
+	url = https://github.com/elpinjo/CdCatalog.git
