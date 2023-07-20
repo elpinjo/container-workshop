@@ -44,14 +44,18 @@ docker build -t cd-catalog:1.0 .
 Now we can run the container. Try to first check the contents of the application.properties file. If you start with the command below using the provided application properties, the JDBC Adapter will not be able to connect as the username & password are incorrect and the endpoint might not be right.
 
 ```
-docker run --rm --name cd-catalog -v <your MicroservicesRuntime_100.xml license file>:/opt/softwareag/IntegrationServer/config/licenseKey.xml -e SAG_IS_LICENSE_FILE=/opt/softwareag/IntegrationServer/config/licenseKey.xml -v `pwd`/application.properties:/opt/softwareag/IntegrationServer/application.properties -dp 6555:5555 cd-catalog:1.0
+docker run --rm --name cd-catalog -v <your MicroservicesRuntime_100.xml license file>:/opt/softwareag/IntegrationServer/config/licenseKey.xml -e SAG_IS_LICENSE_FILE=/opt/softwareag/IntegrationServer/config/licenseKey.xml -dp 6555:5555 cd-catalog:1.0
 ```
 
-### Todo for documentation
+## Generating configuration properties
 
-Setup UM alias
-Setup JDBC pool alias - Done -> document how to use application properties file
-Setup Ldap
-Certificates?
+Now that the container is running, we are able to access the container on port 6555. When logging in we can configure settings like the JDBC connection, in Security > User Management we can configer the LDAP connection and in UM can be configured in the Messaging configuration.
+As this is not something we want to do each time the container starts we can (once configured) export the configuration as a file called application.properties. 
+To do so navigate to Microservices > Configuration Variables. Here we can click Generate Configuration Variables Template which will be automatically downloaded. 
+Now we the downloaded template, replace the values with the correct values for each environment or domain. To securely store password use the Generate Encrypted Configuration Varable on this page to generate an encrypted value one can put in the application.properties file. 
 
-One monitoring server to multiple databases?
+No that the file is correct start the container with the application properties:
+
+```
+docker run --rm --name cd-catalog -v <your MicroservicesRuntime_100.xml license file>:/opt/softwareag/IntegrationServer/config/licenseKey.xml -e SAG_IS_LICENSE_FILE=/opt/softwareag/IntegrationServer/config/licenseKey.xml -v `pwd`/application.properties:/opt/softwareag/IntegrationServer/application.properties -dp 6555:5555 cd-catalog:1.0
+```
